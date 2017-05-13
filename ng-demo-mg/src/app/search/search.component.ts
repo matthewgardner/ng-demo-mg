@@ -1,18 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Person, SearchService } from '../shared/index';
+import { Router, ActivatedRoute  } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy  {
   query: string;
   searchResults: Array<Person>;
+  sub: Subscription;
 
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService, private router: Router, private route: ActivatedRoute) {
+    this.sub = this.route.params.subscribe(params => {
+      if (params['term']) {
+        this.query = decodeURIComponent(params['term']);
+        this.search();
+      }
+    });
+  }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+  
+  onSelect(person: Person) {
+    this.router.navigate(['/edit', person.id]);
+    console.log(person);
   }
 
   search(): void {

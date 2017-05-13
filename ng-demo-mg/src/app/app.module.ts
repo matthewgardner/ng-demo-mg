@@ -7,9 +7,11 @@ import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
 
 import { Routes, RouterModule } from '@angular/router';
+import { EditComponent } from './edit/edit.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchComponent },
+  { path: 'edit/:id', component: EditComponent },
   { path: '', redirectTo: '/search', pathMatch: 'full' }
 ];
 
@@ -17,7 +19,8 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SearchComponent
+    SearchComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
